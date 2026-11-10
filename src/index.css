@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Livro-caixa: papel, tinta e um azul-cobalto "magnético" */
+  --color-papel: #f5f1e8;
+  --color-folha: #fffdf7;
+  --color-tinta: #17201b;
+  --color-tinta-2: #4b4f46;
+  --color-tinta-3: #7d7e74;
+  --color-linha: #e6e0d2;
+  --color-linha-forte: #cfc7b4;
+  --color-noite: #121a16;
+  --color-noite-2: #1c2721;
+
+  --color-cobalto: #2b3fd6;
+  --color-cobalto-escuro: #1f2fa8;
+  --color-cobalto-claro: #e8ebfc;
+
+  /* Séries do gráfico (validadas para daltonismo) */
+  --color-entrada: #1baf7a;
+  --color-saida: #eb6834;
+  --color-retirada: #6250d6;
+  /* Versões escuras para texto (contraste ≥ 4.5:1 no papel) */
+  --color-entrada-texto: #0b7a50;
+  --color-saida-texto: #b1431a;
+  --color-retirada-texto: #4c3cb8;
+  --color-negativo: #b42323;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--color-papel);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Pauta discreta de livro-caixa no fundo da área principal */
+.fundo-livro {
+  background-color: var(--color-papel);
+  background-image:
+    radial-gradient(1200px 500px at 85% -10%, rgb(43 63 214 / 0.07), transparent 60%),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      rgb(23 32 27 / 0.035) 31px,
+      rgb(23 32 27 / 0.035) 32px
+    );
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.anima-subir {
+  animation: subir 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anima-modal {
+  animation: surgir 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anima-subir,
+  .anima-modal {
+    animation: none;
+  }
+}
+
+@layer components {
+/* Campos de formulário */
+.campo {
+  width: 100%;
+  border-radius: 0.6rem;
+  border: 1px solid var(--color-linha-forte);
+  background: var(--color-folha);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-tinta);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.campo:focus {
+  border-color: var(--color-cobalto);
+  box-shadow: 0 0 0 3px rgb(43 63 214 / 0.15);
+}
+select.campo {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234b4f46' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  padding-right: 2rem;
+}
+}
+
+/* Barra de rolagem discreta nas tabelas largas */
+.rolagem::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+.rolagem::-webkit-scrollbar-thumb {
+  background: var(--color-linha-forte);
+  border-radius: 999px;
+  border: 2px solid var(--color-folha);
+}
